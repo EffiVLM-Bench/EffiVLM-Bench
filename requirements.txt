@@ -1,0 +1,20 @@
+# transformers==4.41
+transformers==4.47.1
+pandas
+numpy
+evaluate
+accelerate
+SentencePiece
+jieba
+rouge
+fuzzywuzzy
+python-Levenshtein
+protobuf
+bitsandbytes
+openai
+anthropic
+seaborn
+matplotlib
+debugpy
+pyav
+wandb
