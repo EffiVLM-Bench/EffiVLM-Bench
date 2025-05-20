@@ -1,8 +1,45 @@
-# MLLM-Efficiency
+<h1 align="center">
+<img src="docs/images/logo.png" alt="embodied-logo" width="40" height="40" style="vertical-align: middle; margin-top: -12px;">
+EffiVLM-Bench: A Comprehensive Benchmark for Evaluating Training-Free Acceleration in Large Visual-Languge Models
+</h1>
 
 
-## Installation
-1. Create a new conda environment and install the basic dependencies
+<p align="center">
+  📄  <a href=""><strong>Paper</strong></a> |  
+  🏠 <a href=""><strong>Project Website</strong></a>
+</p>
+
+
+<p align="center">
+    <a href="https://kugwzk.github.io/">Zekun Wang*</a>, 
+    <a href="">MingHua Ma*</a>, 
+    <a href="">Zexin Wang*</a>, 
+    <a href="">Rongchuan Mu*</a>, 
+    <a href="">liping shan</a>, 
+    <a href="https://scholar.google.com/citations?user=VJtmTREAAAAJ&hl=en">Ming Liu</a>, 
+    <a href="https://scholar.google.com/citations?user=LKnCub0AAAAJ">Bing Qin</a>, 
+
+</p>
+<p align="center">Harbin Institute of Technology , Du Xiaoman Technology</p>
+
+
+<!-- <img src="docs/images/main_kvcache.jpg" width="100%" /> -->
+
+# 🔥 Overview 
+We introduce EffiVLM-Bench, a comprehensive benchmark designed to systematically evaluate training-free acceleration methods for Large Visual-Language Models (LVLMs). While LVLMs have achieved remarkable performance across diverse multimodal tasks, their high computational and memory demands hinder practical deployment and scalability. Although various acceleration techniques have been proposed, a lack of unified evaluation across different architectures, datasets, and metrics limits our understanding of their effectiveness and trade-offs. 
+
+In this work, we introduce a comprehensive benchmark, EffiVLM-Bench, to investigate the effectiveness of training-free acceleration methods across representative LVLMs and diverse datasets. We concentrate on evaluating various mainstream acceleration methods classified into two categories: token compression and parameter compression. EffiVLM-Bench provides a unified framework for evaluating not only the absolute performance but also the generalization and loyalty capabilities of these methods, while further exploring the Pareto-optimal trade-offs between performance and efficiency.  
+
+  
+
+# 📌 News
+- 2025.05.18 EffiVLM-Bench is accepted to **ACL 2025**!
+
+
+
+# 🖥️ Installation
+
+## Create a new conda environment and install the basic dependencies
     ```bash
     conda create -n mllm-efficiency python=3.10
     conda activate mllm-efficiency
@@ -14,7 +51,7 @@
     conda install nvidia/label/cuda-12.1.1::cuda-nvcc
     ```
 
-2. Change the env path 
+## Change the env path 
     ```bash
     mkdir -p $CONDA_PREFIX/etc/conda/activate.d
     mkdir -p $CONDA_PREFIX/etc/conda/deactivate.d
@@ -30,14 +67,14 @@
     unset CUDA_HOME
     ```
 
-3. Install the flash-attn
+## Install the flash-attn
     ```bash
     conda activate mllm-efficiency
     echo $CUDA_HOME
     which nvcc
     pip install flash-attn --no-build-isolation
     ```
-4.  use lmms-eval
+## use lmms-eval
     ```bash
     cd lmms-eval
     pip install -e .
@@ -47,54 +84,27 @@
     ```
     **MUST use scripts in base folder, or will raise ModuleNotFoundError**
 
-5. use qwen2_vl for develop
+## use qwen2_vl for develop
     ```bash
     cd qwen2vl
     pip install -e .
     ```
-### Implement details for xxxkv methods
-> The KV cache cluster (managed by the `xxxKVCluster` class) is responsible for selecting and compressing the KV states (keys and values), while the actual storage and dynamic updates of the compressed KV states are **still** handled by the `past_key_values` (aka. `Dynamiccache` class in `transformers` libraries), which remains the central mechanism for autoregressive decoding in Transformers. This separation allows for flexible and efficient cache management, critical for scaling LLMs in constrained environments.
 
-> [!TIP]
-> Step-by-Step Code construction(take `exampleKVCache` as example.)
-> 1. Initialization of the KV Cache Compression System.
->
->    Code: `init_exampleMLLM`
->    ```python
->    def init_exampleMLLM(self):
->        # some configs setting
->
->        self.kv_cluster = exampleMLLMKVCluster(
->            # some configs setting
->        )
->    ```
-> 2. Forward Pass in Attention.
->
->    Code: `qwen_attn_forward_exampleMLLM`
->    ```python
->    def llama_attn_forward_exampleMLLM(...):
->        bsz, q_len, _ = hidden_states.size()
->        init_exampleMLLM(self)
->        ...
->        key_states_compress, value_states_compress = self.kv_cluster.update_kv(
->                key_states, query_states, value_states, attention_mask, self.num_key_value_groups
->            )
->        past_key_value.update(key_states_compress, value_states_compress, self.layer_idx, cache_kwargs)
->    ```
->    **if the method need allocate budgets from all layers, initialize in decoder layer class or do some change(like self.budgets in init_exampleMLLM). Take dynamickv from llm as example to handle this problem.**
-> 3. Managing and Compressing KV Cache
->
->    Code: `exampleMLLMKVCluster` and `update_kv` Method in this class
 
-> [!IMPORTANT]
-> Above steps is the basic implementation from kv-cache-factory. BUT the disadvantage is that we can not evict cache during decoding since only current qkv are in 
+# 🚀 Quick Start
 
-### Use lmms-eval to eval on various of benchmarks.
+## Use lmms-eval to eval on various of benchmarks.
+
+We use lmms-eval to evaluate various benchmarks. For examples of startup scripts, please refer to the run_example.sh file. You only need to replace your own paths and related module names and parameter names accordingly.
+
 ```bash
-./scripts/run_eval.sh textvqa_val /share/home/mhma/models/llava-onevision-qwen2-7b-ov streamingllm 0.5
+./run_example.sh
 ```
-1. hyperparams:
-model_args:pretrained,conv_template,model_name,method,...
+
+## Some hyperparams
+
+1. model_args:pretrained,conv_template,model_name,method,...
+
 ```python
 def __init__(
         self,
@@ -186,3 +196,14 @@ If you are trying to use large LLaVA models such as LLaVA-NeXT-Qwen1.5-72B, you 
         * `leaderboard_url` - URL to the leaderboard, e.g., `https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard`.
         * `point_of_contact` - Point of contact for the results dataset, e.g., `yourname@example.com`.
         * `gated` - whether to gate the details dataset, can be `True` or `False`.
+
+
+
+
+# Acknowledgement
+Thanks [KVCache-Factory](https://github.com/Zefan-Cai/KVCache-Factory.git) , [ECoFLaP](https://github.com/ylsung/ECoFLaP.git) , [Wanda](https://github.com/locuslab/wanda.git), [SparseGPT](https://github.com/IST-DASLab/sparsegpt.git) , [FastV](https://github.com/pkunlp-icler/FastV.git) , [VisionZip](https://github.com/dvlab-research/VisionZip.git) , [PruMerge](https://github.com/42Shawn/LLaVA-PruMerge.git) for providing open-source code to support the expansion of this project. 
+
+# Citation
+```
+
+```
