@@ -27,10 +27,51 @@ BASE_COMMAND="python3 -m accelerate.commands.launch \
 # --model internvl2_with_kvcache for internvl2
 # --model llava_onevision_with_kvcache  for llava_onevision
 
+# first for method name ; second for FILENAME ; third for additional args
 METHODS=(
-    "h2o non_head h2o_head_adaptive=False"
-    "look-m non_merge merge=False"
-    "random random device_map=auto"
+
+    # llava-onevision-qwen2 kv cache method for example
+    "h2o head head_adaptive=True"
+    "snapkv head head_adaptive=True,pooling=avgpool"
+    "pyramidkv head head_adaptive=True,pooling=avgpool"
+    "vl-cache head_layer vlcache_different_window_per_layer=False,vlcache_head_adaptive=True,layer_adaptive=True"
+    "look-m merge merge=True"
+    "random random"
+    "streamingllm streamingllm"
+
+    # llava-onevision-qwen2 token prune method for example
+    "fastv fastv"
+    "visionzip visionzip"
+    "prumerge+ prumerge+"
+
+    # Qwen2-VL kv cache method for example
+    # "h2o head head_adaptive=True,use_flash_attention_2=true"
+    # "snapkv head head_adaptive=True,pooling=avgpool,use_flash_attention_2=true"
+    # "pyramidkv head head_adaptive=True,pooling=avgpool,use_flash_attention_2=true"
+    # "look-m merge merge=True,use_flash_attention_2=true"
+    # "vl-cache head_layer vlcache_different_window_per_layer=False,vlcache_head_adaptive=True,layer_adaptive=True"
+    # "random random use_flash_attention_2=true"
+    # "streamingllm streamingllm use_flash_attention_2=true"
+
+    # Qwen2-VL token prune method for example
+    # "fastv fastv use_flash_attention_2=true"
+    # "visionzip visionzip use_flash_attention_2=true"
+    # "prumerge+ prumerge+ use_flash_attention_2=true"
+
+    # InternVL2_5-38B kv cache method for example
+    # "h2o head head_adaptive=True,device_map=auto"
+    # "snapkv head head_adaptive=True,pooling=avgpool,device_map=auto"
+    # "pyramidkv head head_adaptive=True,pooling=avgpool,device_map=auto"
+    # "look-m merge merge=True,device_map=auto"
+    # "vl-cache head_layer vlcache_different_window_per_layer=False,vlcache_head_adaptive=True,layer_adaptive=True"
+    # "random random device_map=auto"
+    # "streamingllm streamingllm device_map=auto"
+
+    # InternVL2_5-38B token prune method for example
+    # "fastv fastv device_map=auto"
+    # "visionzip visionzip device_map=auto"
+    # "prumerge+ prumerge+ device_map=auto"
+
 )
 
 # budgets
