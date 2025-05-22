@@ -90,6 +90,14 @@ In this work, we introduce a comprehensive benchmark, EffiVLM-Bench, to investig
     pip install qwen-vl-utils
     ```
 
+# Run path settings
+Before running the script, you need to set the environment variables to ensure that the module is imported normally.
+
+    ```bash
+    export CONDA_DEFAULT_ENV="mllm-efficiency"
+    export PATH="/your anaconda path /envs/mllm-efficiency/bin:$PATH"
+    export PYTHONPATH="/your project path/EffiVLM-Bench:/your project path/EffiVLM-Bench/lmms-eval"
+    ```
 
 # 🚀 Quick Start
 
