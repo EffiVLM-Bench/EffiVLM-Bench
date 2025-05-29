@@ -20,7 +20,7 @@ EffiVLM-Bench: A Comprehensive Benchmark for Evaluating Training-Free Accelerati
     <a href="https://scholar.google.com/citations?user=LKnCub0AAAAJ">Bing Qin</a>, 
 
 </p>
-<p align="center">Harbin Institute of Technology , Du Xiaoman Technology</p>
+<p align="center">Harbin Institute of Technology</p>
 
 
 <!-- <img src="docs/images/main_kvcache.jpg" width="100%" /> -->
