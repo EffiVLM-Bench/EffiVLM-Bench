@@ -5,8 +5,8 @@ EffiVLM-Bench: A Comprehensive Benchmark for Evaluating Training-Free Accelerati
 
 
 <p align="center">
-  📄  <a href=""><strong>Paper</strong></a> |  
-  🏠 <a href=""><strong>Project Website</strong></a>
+  📄  <a href="https://arxiv.org/abs/2506.00479"><strong>Paper</strong></a> |  
+  🏠 <a href="https://effivlm-bench.github.io/"><strong>Project Website</strong></a>
 </p>
 
 
@@ -157,5 +157,15 @@ Thanks [KVCache-Factory](https://github.com/Zefan-Cai/KVCache-Factory.git) , [EC
 
 # Citation
 ```
+
+@misc{wang2025effivlmbenchcomprehensivebenchmarkevaluating,
+      title={EffiVLM-BENCH: A Comprehensive Benchmark for Evaluating Training-Free Acceleration in Large Vision-Language Models}, 
+      author={Zekun Wang and Minghua Ma and Zexin Wang and Rongchuan Mu and Liping Shan and Ming Liu and Bing Qin},
+      year={2025},
+      eprint={2506.00479},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2506.00479}, 
+    }
 
 ```
